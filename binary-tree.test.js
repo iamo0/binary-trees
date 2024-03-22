@@ -119,67 +119,73 @@ describe("Tree detection", () => {
     ).toBe(false);
   });
 
-  expect(
-    b.isBinaryTreeLike({
-      val: 1,
-      left: null,
-      right: null,
-    }),
-  ).toBe(true);
+  test("Simple tree with only one node and both left and right nulls is a tree", () => {
+    expect(
+      b.isBinaryTreeLike({
+        val: 1,
+        left: null,
+        right: null,
+      }),
+    ).toBe(true);
+  });
 
-  expect(
-    b.isBinaryTreeLike({
-      val: 1,
-      left: {
-        val: 0.5,
-        left: null,
+  test("Deep 2-level tree with at least one not null child node is a tree", () => {
+    expect(
+      b.isBinaryTreeLike({
+        val: 1,
+        left: {
+          val: 0.5,
+          left: null,
+          right: null,
+        },
         right: null,
-      },
-      right: null,
-    }),
-  ).toBe(true);
+      }),
+    ).toBe(true);
 
-  expect(
-    b.isBinaryTreeLike({
-      val: 1,
-      left: null,
-      right: {
-        val: 2,
+    expect(
+      b.isBinaryTreeLike({
+        val: 1,
         left: null,
-        right: null,
-      },
-    }),
-  ).toBe(true);
+        right: {
+          val: 2,
+          left: null,
+          right: null,
+        },
+      }),
+    ).toBe(true);
 
-  expect(
-    b.isBinaryTreeLike({
-      val: 1,
-      left: {
-        val: 0.5,
-        left: null,
-        right: null,
-      },
-      right: {
-        val: 2,
-        left: null,
-        right: null,
-      },
-    }),
-  ).toBe(true);
+    expect(
+      b.isBinaryTreeLike({
+        val: 1,
+        left: {
+          val: 0.5,
+          left: null,
+          right: null,
+        },
+        right: {
+          val: 2,
+          left: null,
+          right: null,
+        },
+      }),
+    ).toBe(true);
+  });
 
-  expect(
-    b.isBinaryTreeLike({
-      val: 1,
-      excessiveProperty: true,
-      left: {
-        val: 0.5,
-        left: null,
-        right: null,
+  test("Additional properties doesn't influence the check", () => {
+    expect(
+      b.isBinaryTreeLike({
+        val: 1,
         excessiveProperty: true,
-      },
-      right: null,
-    }),
-  ).toBe(true);
+        left: {
+          val: 0.5,
+          left: null,
+          right: null,
+          excessiveProperty: true,
+        },
+        right: null,
+      }),
+    ).toBe(true);
+  });
 });
 
 describe("Detection if given tree is really binary", () => {
@@ -554,6 +560,24 @@ describe("Binary tree insertion", () => {
       val: 4,
       left: null,
       right: null,
+    });
+  });
+
+  test("Binary insertion with additional properties", () => {
+    const root = b.createBinaryTree(1);
+    const insertedNode = b.insertBinary(root, 2, {
+      additionalProperty: "Additional value",
+    });
+
+    expect(insertedNode).toEqual({
+      val: 1,
+      left: null,
+      right: {
+        val: 2,
+        left: null,
+        right: null,
+        additionalProperty: "Additional value",
+      },
     });
   });
 });
