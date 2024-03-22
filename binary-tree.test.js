@@ -1,13 +1,10 @@
 const b = require("./binary-tree.js");
 
 test("Tree creation", () => {
-  // TODO: More thorough tests
-
   expect(b.createBinaryTree(1)).toEqual({
     val: 1,
     left: null,
     right: null,
-    // TODO: color: b.NodeColor.BLACK,
   });
 });
 

@@ -1,8 +1,3 @@
-const NodeColor = {
-  BLACK: 0,
-  RED: 1,
-};
-
 // NB! Conceptual Thought
 // With this interface, whenever you pass something
 // abysmal as left and right, this function would
