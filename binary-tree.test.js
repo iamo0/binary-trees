@@ -1,6 +1,5 @@
 const b = require("./binary-tree.js");
 
-
 test("Tree creation", () => {
   // TODO: More thorough tests
 
@@ -12,105 +11,123 @@ test("Tree creation", () => {
   });
 });
 
-
 describe("Tree detection", () => {
   test("Empty object is not a tree", () => {
     expect(b.isABinaryTreeLike({})).toBe(false);
   });
 
   test("Tree with missing right value (on any depth) is not a tree", () => {
-    expect(b.isABinaryTreeLike({
-      val: 1,
-      left: null,
-    })).toBe(false);
-
-    expect(b.isABinaryTreeLike({
-      val: 1,
-      left: {
-        val: 0.5,
+    expect(
+      b.isABinaryTreeLike({
+        val: 1,
         left: null,
+      }),
+    ).toBe(false);
+
+    expect(
+      b.isABinaryTreeLike({
+        val: 1,
+        left: {
+          val: 0.5,
+          left: null,
+          right: null,
+        },
+      }),
+    ).toBe(false);
+
+    expect(
+      b.isABinaryTreeLike({
+        val: 1,
+        left: {
+          val: 0.5,
+          left: null,
+        },
         right: null,
-      },
-    })).toBe(false);
-
-    expect(b.isABinaryTreeLike({
-      val: 1,
-      left: {
-        val: 0.5,
-        left: null,
-      },
-      right: null,
-    })).toBe(false);
+      }),
+    ).toBe(false);
   });
 
   test("Tree with missing left value (on any depth) is not a tree", () => {
-    expect(b.isABinaryTreeLike({
-      val: 1,
-      right: null,
-    })).toBe(false);
+    expect(
+      b.isABinaryTreeLike({
+        val: 1,
+        right: null,
+      }),
+    ).toBe(false);
 
-    expect(b.isABinaryTreeLike({
+    expect(
+      b.isABinaryTreeLike({
+        val: 1,
+        right: {
+          val: 0.5,
+          left: null,
+          right: null,
+        },
+      }),
+    ).toBe(false);
+  });
+
+  expect(
+    b.isABinaryTreeLike({
       val: 1,
-      right: {
+      left: null,
+      right: null,
+    }),
+  ).toBe(true);
+
+  expect(
+    b.isABinaryTreeLike({
+      val: 1,
+      left: {
         val: 0.5,
         left: null,
         right: null,
       },
-    })).toBe(false);
-  });
-
-  expect(b.isABinaryTreeLike({
-    val: 1,
-    left: null,
-    right: null,
-  })).toBe(true);
-
-  expect(b.isABinaryTreeLike({
-    val: 1,
-    left: {
-      val: 0.5,
-      left: null,
       right: null,
-    },
-    right: null,
-  })).toBe(true);
+    }),
+  ).toBe(true);
 
-  expect(b.isABinaryTreeLike({
-    val: 1,
-    left: null,
-    right: {
-      val: 2,
+  expect(
+    b.isABinaryTreeLike({
+      val: 1,
       left: null,
-      right: null,
-    },
-  })).toBe(true);
+      right: {
+        val: 2,
+        left: null,
+        right: null,
+      },
+    }),
+  ).toBe(true);
 
-  expect(b.isABinaryTreeLike({
-    val: 1,
-    left: {
-      val: 0.5,
-      left: null,
-      right: null,
-    },
-    right: {
-      val: 2,
-      left: null,
-      right: null,
-    },
-  })).toBe(true);
+  expect(
+    b.isABinaryTreeLike({
+      val: 1,
+      left: {
+        val: 0.5,
+        left: null,
+        right: null,
+      },
+      right: {
+        val: 2,
+        left: null,
+        right: null,
+      },
+    }),
+  ).toBe(true);
 
-
-  expect(b.isABinaryTreeLike({
-    val: 1,
-    excessiveProperty: true,
-    left: {
-      val: 0.5,
-      left: null,
-      right: null,
+  expect(
+    b.isABinaryTreeLike({
+      val: 1,
       excessiveProperty: true,
-    },
-    right: null,
-  })).toBe(true);
+      left: {
+        val: 0.5,
+        left: null,
+        right: null,
+        excessiveProperty: true,
+      },
+      right: null,
+    }),
+  ).toBe(true);
 });
 
 describe("Tree in-order traversal", () => {
@@ -137,7 +154,6 @@ describe("Tree in-order traversal", () => {
     expect(list).toEqual([2, 3, 4]);
   });
 
-
   test("In-order traversal interruption", () => {
     const traversedNodes = [];
     let counter = 0;
@@ -163,7 +179,7 @@ describe("Tree in-order traversal", () => {
         },
       },
     };
-  
+
     b.inorder(tree, (node) => {
       counter++;
       traversedNodes.push(node.val);
@@ -174,7 +190,6 @@ describe("Tree in-order traversal", () => {
     expect(traversedNodes).toEqual([1, 2, 3, 4]);
   });
 });
-
 
 describe("Node lookup", () => {
   test("In-order lookup", () => {
@@ -195,10 +210,9 @@ describe("Node lookup", () => {
     };
 
     expect(
-      b.lookup(haystack, (needleLike) => needleLike.val === 3, b.inorder)
+      b.lookup(haystack, (needleLike) => needleLike.val === 3, b.inorder),
     ).toBe(needle);
   });
-
 
   test("Default lookup traversal mode is in-order", () => {
     const needle = {
@@ -206,7 +220,7 @@ describe("Node lookup", () => {
       left: null,
       right: null,
     };
-  
+
     const haystack = {
       val: 2,
       left: {
@@ -244,7 +258,7 @@ describe("Node lookup", () => {
     };
 
     expect(
-      b.lookup(haystack, (needleLike) => needleLike.val === "Eternal life")
+      b.lookup(haystack, (needleLike) => needleLike.val === "Eternal life"),
     ).toBe(null);
   });
 });
@@ -327,6 +341,59 @@ describe("Binary tree deletion", () => {
       };
 
       expect(b.deleteBinary(tree, nodeToDelete).left).toBe(null);
+    });
+
+    test("Deletion works correctly without passed callback", () => {
+      const nodeToDelete = {
+        val: 1,
+        left: {
+          val: 0.5,
+          left: null,
+          right: null,
+        },
+        right: null,
+      };
+
+      const tree = {
+        val: 2,
+        left: nodeToDelete,
+        right: {
+          val: 3,
+          left: null,
+          right: null,
+        },
+      };
+
+      expect(b.deleteBinary(tree, nodeToDelete, true).left).toBe(null);
+    });
+
+    test("Deletion with passed callback runs callback on each stage of lookup", () => {
+      const nodeToDelete = {
+        val: 1,
+        left: {
+          val: 0.5,
+          left: null,
+          right: null,
+        },
+        right: null,
+      };
+
+      const tree = {
+        val: 2,
+        left: nodeToDelete,
+        right: {
+          val: 3,
+          left: null,
+          right: null,
+        },
+      };
+
+      const lookupFn = jest.fn();
+
+      const updatedTree = b.deleteBinary(tree, nodeToDelete, true, lookupFn);
+
+      expect(updatedTree.left).toBe(null);
+      expect(lookupFn).toHaveBeenCalledTimes(3);
     });
 
     test("Deep deletion stops when its found the node and doesn't traverse the whole tree", () => {
