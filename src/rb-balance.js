@@ -36,7 +36,14 @@ const colorTree = (node, color) => {
   return coloredTree;
 };
 
+const insertNode = (node, val, props) => {
+  const insertedNode = b.insertBinary(node, val, props);
+  const coloredNode = colorTree(insertedNode, NodeColor.RED);
+  return coloredNode;
+};
+
 module.exports = {
   colorTree,
+  insertNode,
   NodeColor,
 };

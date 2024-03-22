@@ -111,3 +111,28 @@ describe("Coloring tree red and black", () => {
     });
   });
 });
+
+describe("Node insertion", () => {
+  test("All newly inserted nodes are always red", () => {
+    const initialTree = {
+      val: 3,
+      color: rb.NodeColor.BLACK,
+      left: {
+        val: 1,
+        color: rb.NodeColor.RED,
+        left: null,
+        right: null,
+      },
+      right: null,
+    };
+
+    const nodeToInsert = rb.insertNode(initialTree, 2);
+
+    expect(nodeToInsert).toEqual({
+      val: 2,
+      color: rb.NodeColor.RED,
+      left: null,
+      right: null,
+    });
+  });
+});
