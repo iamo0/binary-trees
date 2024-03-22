@@ -1,0 +1,117 @@
+// NB! Conceptual Thought
+// With this interface, whenever you pass something
+// abysmal as left and right, this function would
+// create a tree anyway and won't say a word.
+// Should it be throwing exceptions like crazy
+// if given parameters are out of type?
+// Maybe I should have a look into constructors
+// and possibly typescript
+const createBinaryTree = (val, left, right) => ({
+  val: val,
+  left: left !== undefined && isABinaryTreeLike(left) ? left : null,
+  right: right !== undefined && isABinaryTreeLike(right) ? right : null,
+});
+
+const isABinaryTreeLike = (node) =>
+  node !== null &&
+  node.hasOwnProperty("val") &&
+  node.hasOwnProperty("left") &&
+  (node.left === null || isABinaryTreeLike(node.left)) &&
+  node.hasOwnProperty("right") &&
+  (node.right === null || isABinaryTreeLike(node.right));
+
+const isBalanced = (node) => {
+  return false;
+};
+
+const insertBinary = (node, val) => {
+  let left = node.left;
+  let right = node.right;
+
+  if (val < node.val) {
+    left = isABinaryTreeLike(left)
+      ? insertBinary(left, val)
+      : createBinaryTree(val);
+  }
+
+  if (val > node.val) {
+    right = isABinaryTreeLike(right)
+      ? insertBinary(right, val)
+      : createBinaryTree(val);
+  }
+
+  return createBinaryTree(node.val, left, right);
+};
+
+const deleteBinary = (node, nodeToDelete, deep) => {
+  if (deep === undefined) {
+    deep = true;
+  }
+
+  if (node === nodeToDelete) {
+    return null;
+  }
+
+  // TODO: Should there really be an in-order traversal?
+  inorder(node, (soughtForNode) => {
+    if (soughtForNode.left === nodeToDelete) {
+      soughtForNode.left = null;
+      return true;
+    }
+
+    if (soughtForNode.right === nodeToDelete) {
+      soughtForNode.right = null;
+      return true;
+    }
+  });
+
+  return node;
+};
+
+const inorder = (node, fn) => {
+  if (!node) {
+    return;
+  }
+
+  inorder(node.left, fn);
+
+  const shouldInterrupt = fn(node);
+
+  if (shouldInterrupt) {
+    return;
+  }
+
+  inorder(node.right, fn);
+};
+
+// TODO: const preorder = (node, fn) => {}
+// TODO: const postorder = (node, fn) => {}
+// TODO: const bfs = (node, fn) => {}
+// TODO: const dfs = (node, fn) => {}
+
+const lookup = (node, lookupFn, orderFn) => {
+  if (!orderFn) {
+    orderFn = inorder;
+  }
+
+  let foundNode = null;
+
+  orderFn(node, (soughtForNode) => {
+    if (lookupFn(soughtForNode)) {
+      foundNode = soughtForNode;
+    }
+
+    return foundNode !== null;
+  });
+
+  return foundNode;
+};
+
+module.exports = {
+  createBinaryTree: createBinaryTree,
+  deleteBinary: deleteBinary,
+  inorder: inorder,
+  insertBinary: insertBinary,
+  isABinaryTreeLike: isABinaryTreeLike,
+  lookup: lookup,
+};
