@@ -137,11 +137,11 @@ const lookup = (node, lookupFn, orderFn) => {
 };
 
 module.exports = {
-  bfs: bfs,
-  createBinaryTree: createBinaryTree,
-  deleteBinary: deleteBinary,
-  inorder: inorder,
-  insertBinary: insertBinary,
-  isABinaryTreeLike: isABinaryTreeLike,
-  lookup: lookup,
+  bfs,
+  createBinaryTree,
+  deleteBinary,
+  inorder,
+  insertBinary,
+  isABinaryTreeLike,
+  lookup,
 };
