@@ -37,20 +37,21 @@ const isCorrectBinary = (node) => {
   return isCorrectBinary(node.left) && isCorrectBinary(node.right);
 };
 
-const insertBinary = (node, val) => {
+// TODO: Custom comparison function
+const insertBinary = (node, val, props) => {
   let left = node.left;
   let right = node.right;
 
   if (val < node.val) {
     left = isBinaryTreeLike(left)
-      ? insertBinary(left, val)
-      : createBinaryTree(val);
+      ? insertBinary(left, val, props)
+      : createBinaryTree(val, props);
   }
 
   if (val > node.val) {
     right = isBinaryTreeLike(right)
-      ? insertBinary(right, val)
-      : createBinaryTree(val);
+      ? insertBinary(right, val, props)
+      : createBinaryTree(val, props);
   }
 
   return createBinaryTree(node.val, left, right);
