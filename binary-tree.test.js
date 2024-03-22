@@ -11,30 +11,30 @@ describe("Tree creation", () => {
 
   test("Deep tree creation", () => {
     const tree = b.createBinaryTree(
-      1,
-      b.createBinaryTree(2, b.createBinaryTree(3), b.createBinaryTree(4)),
-      b.createBinaryTree(5, b.createBinaryTree(6), b.createBinaryTree(7)),
+      4,
+      b.createBinaryTree(2, b.createBinaryTree(1), b.createBinaryTree(3)),
+      b.createBinaryTree(6, b.createBinaryTree(5), b.createBinaryTree(7)),
     );
 
     const expectedTree = {
-      val: 1,
+      val: 4,
       left: {
         val: 2,
         left: {
-          val: 3,
+          val: 1,
           left: null,
           right: null,
         },
         right: {
-          val: 4,
+          val: 3,
           left: null,
           right: null,
         },
       },
       right: {
-        val: 5,
+        val: 6,
         left: {
-          val: 6,
+          val: 5,
           left: null,
           right: null,
         },
@@ -65,19 +65,19 @@ describe("Tree creation", () => {
 
 describe("Tree detection", () => {
   test("Empty object is not a tree", () => {
-    expect(b.isABinaryTreeLike({})).toBe(false);
+    expect(b.isBinaryTreeLike({})).toBe(false);
   });
 
   test("Tree with missing right value (on any depth) is not a tree", () => {
     expect(
-      b.isABinaryTreeLike({
+      b.isBinaryTreeLike({
         val: 1,
         left: null,
       }),
     ).toBe(false);
 
     expect(
-      b.isABinaryTreeLike({
+      b.isBinaryTreeLike({
         val: 1,
         left: {
           val: 0.5,
@@ -88,7 +88,7 @@ describe("Tree detection", () => {
     ).toBe(false);
 
     expect(
-      b.isABinaryTreeLike({
+      b.isBinaryTreeLike({
         val: 1,
         left: {
           val: 0.5,
@@ -101,14 +101,14 @@ describe("Tree detection", () => {
 
   test("Tree with missing left value (on any depth) is not a tree", () => {
     expect(
-      b.isABinaryTreeLike({
+      b.isBinaryTreeLike({
         val: 1,
         right: null,
       }),
     ).toBe(false);
 
     expect(
-      b.isABinaryTreeLike({
+      b.isBinaryTreeLike({
         val: 1,
         right: {
           val: 0.5,
@@ -120,7 +120,7 @@ describe("Tree detection", () => {
   });
 
   expect(
-    b.isABinaryTreeLike({
+    b.isBinaryTreeLike({
       val: 1,
       left: null,
       right: null,
@@ -128,7 +128,7 @@ describe("Tree detection", () => {
   ).toBe(true);
 
   expect(
-    b.isABinaryTreeLike({
+    b.isBinaryTreeLike({
       val: 1,
       left: {
         val: 0.5,
@@ -140,7 +140,7 @@ describe("Tree detection", () => {
   ).toBe(true);
 
   expect(
-    b.isABinaryTreeLike({
+    b.isBinaryTreeLike({
       val: 1,
       left: null,
       right: {
@@ -152,7 +152,7 @@ describe("Tree detection", () => {
   ).toBe(true);
 
   expect(
-    b.isABinaryTreeLike({
+    b.isBinaryTreeLike({
       val: 1,
       left: {
         val: 0.5,
@@ -168,7 +168,7 @@ describe("Tree detection", () => {
   ).toBe(true);
 
   expect(
-    b.isABinaryTreeLike({
+    b.isBinaryTreeLike({
       val: 1,
       excessiveProperty: true,
       left: {
@@ -180,6 +180,44 @@ describe("Tree detection", () => {
       right: null,
     }),
   ).toBe(true);
+});
+
+describe("Detection if given tree is really binary", () => {
+  test("Correct binary tree using isCorrectBinary function", () => {
+    const tree = {
+      val: 2,
+      left: {
+        val: 1,
+        left: null,
+        right: null,
+      },
+      right: {
+        val: 3,
+        left: null,
+        right: null,
+      },
+    };
+
+    expect(b.isCorrectBinary(tree)).toBe(true);
+  });
+
+  test("Incorrect binary tree using isCorrectBinary function", () => {
+    const tree = {
+      val: 2,
+      left: {
+        val: 3,
+        left: null,
+        right: null,
+      },
+      right: {
+        val: 1,
+        left: null,
+        right: null,
+      },
+    };
+
+    expect(b.isCorrectBinary(tree)).toBe(false);
+  });
 });
 
 describe("Tree in-order traversal", () => {

@@ -8,31 +8,47 @@
 // and possibly typescript
 const createBinaryTree = (val, left, right, additionalProps) => ({
   val: val,
-  left: left !== undefined && isABinaryTreeLike(left) ? left : null,
-  right: right !== undefined && isABinaryTreeLike(right) ? right : null,
+  left: left !== undefined && isBinaryTreeLike(left) ? left : null,
+  right: right !== undefined && isBinaryTreeLike(right) ? right : null,
   ...additionalProps,
 });
 
-const isABinaryTreeLike = (node) =>
+const isBinaryTreeLike = (node) =>
   node !== null &&
   node.hasOwnProperty("val") &&
   node.hasOwnProperty("left") &&
-  (node.left === null || isABinaryTreeLike(node.left)) &&
+  (node.left === null || isBinaryTreeLike(node.left)) &&
   node.hasOwnProperty("right") &&
-  (node.right === null || isABinaryTreeLike(node.right));
+  (node.right === null || isBinaryTreeLike(node.right));
+
+const isCorrectBinary = (node) => {
+  if (node === null) {
+    return true;
+  }
+
+  if (node.left !== null && node.left.val > node.val) {
+    return false;
+  }
+
+  if (node.right !== null && node.right.val < node.val) {
+    return false;
+  }
+
+  return isCorrectBinary(node.left) && isCorrectBinary(node.right);
+};
 
 const insertBinary = (node, val) => {
   let left = node.left;
   let right = node.right;
 
   if (val < node.val) {
-    left = isABinaryTreeLike(left)
+    left = isBinaryTreeLike(left)
       ? insertBinary(left, val)
       : createBinaryTree(val);
   }
 
   if (val > node.val) {
-    right = isABinaryTreeLike(right)
+    right = isBinaryTreeLike(right)
       ? insertBinary(right, val)
       : createBinaryTree(val);
   }
@@ -139,6 +155,7 @@ module.exports = {
   deleteBinary,
   inorder,
   insertBinary,
-  isABinaryTreeLike,
+  isBinaryTreeLike,
+  isCorrectBinary,
   lookup,
 };
