@@ -6,10 +6,11 @@
 // if given parameters are out of type?
 // Maybe I should have a look into constructors
 // and possibly typescript
-const createBinaryTree = (val, left, right) => ({
+const createBinaryTree = (val, left, right, additionalProps) => ({
   val: val,
   left: left !== undefined && isABinaryTreeLike(left) ? left : null,
   right: right !== undefined && isABinaryTreeLike(right) ? right : null,
+  ...additionalProps,
 });
 
 const isABinaryTreeLike = (node) =>

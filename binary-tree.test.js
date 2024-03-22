@@ -9,19 +9,11 @@ describe("Tree creation", () => {
     });
   });
 
-  test.only("Deep tree creation", () => {
+  test("Deep tree creation", () => {
     const tree = b.createBinaryTree(
       1,
-      b.createBinaryTree(
-        2, 
-        b.createBinaryTree(3), 
-        b.createBinaryTree(4)
-      ),
-      b.createBinaryTree(
-        5, 
-        b.createBinaryTree(6), 
-        b.createBinaryTree(7)
-      ),
+      b.createBinaryTree(2, b.createBinaryTree(3), b.createBinaryTree(4)),
+      b.createBinaryTree(5, b.createBinaryTree(6), b.createBinaryTree(7)),
     );
 
     const expectedTree = {
@@ -55,6 +47,19 @@ describe("Tree creation", () => {
     };
 
     expect(tree).toEqual(expectedTree);
+  });
+
+  test("Creation of a tree with additional properties", () => {
+    const tree = b.createBinaryTree(1, null, null, {
+      additionalProp: "additionalValue",
+    });
+
+    expect(tree).toEqual({
+      val: 1,
+      left: null,
+      right: null,
+      additionalProp: "additionalValue",
+    });
   });
 });
 
@@ -408,6 +413,29 @@ describe("Node lookup", () => {
     expect(
       b.lookup(haystack, (needleLike) => needleLike.val === "Eternal life"),
     ).toBe(null);
+  });
+
+  test("Lookup works correctly with additional properties", () => {
+    const needle = {
+      val: 3,
+      left: null,
+      right: null,
+      additionalProp: "additionalValue",
+    };
+
+    const haystack = {
+      val: 2,
+      left: {
+        val: 1,
+        left: null,
+        right: null,
+      },
+      right: needle,
+    };
+
+    expect(b.lookup(haystack, (needleLike) => needleLike.val === 3)).toBe(
+      needle,
+    );
   });
 });
 
