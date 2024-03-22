@@ -1,5 +1,5 @@
-const b = require("./binary-tree.js");
-const rb = require("./rb-balance.js");
+const b = require("./binary-tree");
+const rb = require("./rb-balance");
 
 describe("Coloring tree red and black", () => {
   test("Tree coloring function creates new tree instance by default", () => {

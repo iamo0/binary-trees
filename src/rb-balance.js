@@ -1,4 +1,4 @@
-const b = require("./binary-tree.js");
+const b = require("./binary-tree");
 
 const NodeColor = {
   BLACK: 0,
