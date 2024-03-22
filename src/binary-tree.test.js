@@ -545,7 +545,7 @@ describe("Node lookup", () => {
 });
 
 describe("Binary tree insertion", () => {
-  test("Binary insertion without balancing a tree", () => {
+  test("New value is inserted at correct spot", () => {
     const tree = {
       val: 3,
       left: null,
@@ -556,25 +556,39 @@ describe("Binary tree insertion", () => {
       },
     };
 
-    expect(b.insertBinary(tree, 4).right.left).toEqual({
+    expect(b.insertBinary(tree, 4)).toEqual({
       val: 4,
       left: null,
       right: null,
     });
+
+    expect(tree).toEqual({
+      val: 3,
+      left: null,
+      right: {
+        val: 5,
+        left: {
+          val: 4,
+          left: null,
+          right: null,
+        },
+        right: null,
+      },
+    });
   });
 
-  test("Binary insertion with additional properties", () => {
+  test("On insertion additional properties are saved both in root element and in child", () => {
     const root = b.createBinaryTree(1, null, null, {
       initialProperty: "Initial property",
     });
-    const insertedNode = b.insertBinary(root, 2, {
+
+    b.insertBinary(root, 2, {
       additionalProperty: "Additional value",
     });
 
-    expect(insertedNode).toEqual({
+    expect(root).toEqual({
       val: 1,
       initialProperty: "Initial property",
-      foo: "Bar",
       left: null,
       right: {
         val: 2,

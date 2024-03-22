@@ -39,27 +39,24 @@ const isCorrectBinary = (node) => {
 
 // TODO: Custom comparison function
 const insertBinary = (node, val, props) => {
-  let left = node.left;
-  let right = node.right;
+  const nodeToInsert = createBinaryTree(val, null, null, props);
+  
+  // TODO: Does traversal method matter?
+  inorder(node, (currentNode) => {
+    if (nodeToInsert.val < currentNode.val && currentNode.left === null) {
+      currentNode.left = nodeToInsert;
+      return true;
+    }
 
-  if (val < node.val) {
-    left = isBinaryTreeLike(left)
-      ? insertBinary(left, val, props)
-      : createBinaryTree(val, null, null, props);
-  }
+    if (nodeToInsert.val > currentNode.val && currentNode.right === null) {
+      currentNode.right = nodeToInsert;
+      return true;
+    }
 
-  if (val > node.val) {
-    right = isBinaryTreeLike(right)
-      ? insertBinary(right, val, props)
-      : createBinaryTree(val, null, null, props);
-  }
+    return false;
+  });
 
-  const savedProperties = Object.assign({}, node);
-  delete savedProperties.val;
-  delete savedProperties.left;
-  delete savedProperties.right;
-
-  return createBinaryTree(node.val, left, right, savedProperties);
+  return nodeToInsert;
 };
 
 const deleteBinary = (node, nodeToDelete, deep, lookupFn) => {
