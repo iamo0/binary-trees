@@ -45,16 +45,21 @@ const insertBinary = (node, val, props) => {
   if (val < node.val) {
     left = isBinaryTreeLike(left)
       ? insertBinary(left, val, props)
-      : createBinaryTree(val, props);
+      : createBinaryTree(val, null, null, props);
   }
 
   if (val > node.val) {
     right = isBinaryTreeLike(right)
       ? insertBinary(right, val, props)
-      : createBinaryTree(val, props);
+      : createBinaryTree(val, null, null, props);
   }
 
-  return createBinaryTree(node.val, left, right);
+  const savedProperties = Object.assign({}, node);
+  delete savedProperties.val;
+  delete savedProperties.left;
+  delete savedProperties.right;
+
+  return createBinaryTree(node.val, left, right, savedProperties);
 };
 
 const deleteBinary = (node, nodeToDelete, deep, lookupFn) => {
