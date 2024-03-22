@@ -17,7 +17,7 @@ All code is written in TDD, so there's a unit-test for each function. Works grea
 
 TODO:
 - [ ] Black-Red Tree implementation for balancing trees
-  - [x] Colouring nodes to black and white
+  - [x] Colouring nodes to black and red
   - [ ] Checking if tree is correctly balanced
   - [ ] Inserting a node with rebalancing the tree afterwards
   - [ ] Deleting a node with rebalancing the tree afterwards
