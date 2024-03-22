@@ -1,29 +1,30 @@
-const wood = require("./wood.js");
+const b = require("./binary-tree.js");
 
 
 test("Tree creation", () => {
   // TODO: More thorough tests
 
-  expect(wood.createBinaryTree(1)).toEqual({
+  expect(b.createBinaryTree(1)).toEqual({
     val: 1,
     left: null,
     right: null,
+    // TODO: color: b.NodeColor.BLACK,
   });
 });
 
 
 describe("Tree detection", () => {
   test("Empty object is not a tree", () => {
-    expect(wood.isABinaryTreeLike({})).toBe(false);
+    expect(b.isABinaryTreeLike({})).toBe(false);
   });
 
   test("Tree with missing right value (on any depth) is not a tree", () => {
-    expect(wood.isABinaryTreeLike({
+    expect(b.isABinaryTreeLike({
       val: 1,
       left: null,
     })).toBe(false);
 
-    expect(wood.isABinaryTreeLike({
+    expect(b.isABinaryTreeLike({
       val: 1,
       left: {
         val: 0.5,
@@ -32,7 +33,7 @@ describe("Tree detection", () => {
       },
     })).toBe(false);
 
-    expect(wood.isABinaryTreeLike({
+    expect(b.isABinaryTreeLike({
       val: 1,
       left: {
         val: 0.5,
@@ -43,12 +44,12 @@ describe("Tree detection", () => {
   });
 
   test("Tree with missing left value (on any depth) is not a tree", () => {
-    expect(wood.isABinaryTreeLike({
+    expect(b.isABinaryTreeLike({
       val: 1,
       right: null,
     })).toBe(false);
 
-    expect(wood.isABinaryTreeLike({
+    expect(b.isABinaryTreeLike({
       val: 1,
       right: {
         val: 0.5,
@@ -58,13 +59,13 @@ describe("Tree detection", () => {
     })).toBe(false);
   });
 
-  expect(wood.isABinaryTreeLike({
+  expect(b.isABinaryTreeLike({
     val: 1,
     left: null,
     right: null,
   })).toBe(true);
 
-  expect(wood.isABinaryTreeLike({
+  expect(b.isABinaryTreeLike({
     val: 1,
     left: {
       val: 0.5,
@@ -74,7 +75,7 @@ describe("Tree detection", () => {
     right: null,
   })).toBe(true);
 
-  expect(wood.isABinaryTreeLike({
+  expect(b.isABinaryTreeLike({
     val: 1,
     left: null,
     right: {
@@ -84,7 +85,7 @@ describe("Tree detection", () => {
     },
   })).toBe(true);
 
-  expect(wood.isABinaryTreeLike({
+  expect(b.isABinaryTreeLike({
     val: 1,
     left: {
       val: 0.5,
@@ -99,7 +100,7 @@ describe("Tree detection", () => {
   })).toBe(true);
 
 
-  expect(wood.isABinaryTreeLike({
+  expect(b.isABinaryTreeLike({
     val: 1,
     excessiveProperty: true,
     left: {
@@ -129,7 +130,7 @@ describe("Tree in-order traversal", () => {
     };
 
     const list = [];
-    wood.inorder(tree, (node) => {
+    b.inorder(tree, (node) => {
       list.push(node.val);
     });
 
@@ -163,7 +164,7 @@ describe("Tree in-order traversal", () => {
       },
     };
   
-    wood.inorder(tree, (node) => {
+    b.inorder(tree, (node) => {
       counter++;
       traversedNodes.push(node.val);
       return node.val === 4;
@@ -194,7 +195,7 @@ describe("Node lookup", () => {
     };
 
     expect(
-      wood.lookup(haystack, (needleLike) => needleLike.val === 3, wood.inorder)
+      b.lookup(haystack, (needleLike) => needleLike.val === 3, b.inorder)
     ).toBe(needle);
   });
 
@@ -218,7 +219,7 @@ describe("Node lookup", () => {
 
     const lookupTrace = [];
 
-    const foundNode = wood.lookup(haystack, (needleLike) => {
+    const foundNode = b.lookup(haystack, (needleLike) => {
       lookupTrace.push(needleLike.val);
       return needleLike.val === 3;
     });
@@ -243,7 +244,7 @@ describe("Node lookup", () => {
     };
 
     expect(
-      wood.lookup(haystack, (needleLike) => needleLike.val === "Eternal life")
+      b.lookup(haystack, (needleLike) => needleLike.val === "Eternal life")
     ).toBe(null);
   });
 });
@@ -260,7 +261,7 @@ describe("Binary tree insertion", () => {
       },
     };
 
-    expect(wood.insertBinary(tree, 4).right.left).toEqual({
+    expect(b.insertBinary(tree, 4).right.left).toEqual({
       val: 4,
       left: null,
       right: null,
@@ -291,7 +292,7 @@ describe("Binary tree deletion", () => {
         },
       };
 
-      expect(wood.deleteBinary(tree, nodeToDelete, true).left).toBe(null);
+      expect(b.deleteBinary(tree, nodeToDelete, true).left).toBe(null);
     });
 
     test("Deep deletion of a root itself returns null", () => {
@@ -301,7 +302,7 @@ describe("Binary tree deletion", () => {
         right: null,
       };
 
-      expect(wood.deleteBinary(suicideTree, suicideTree, true)).toBe(null);
+      expect(b.deleteBinary(suicideTree, suicideTree, true)).toBe(null);
     });
 
     test("Deep deletion is a default mode if third parameter is not passed", () => {
@@ -325,11 +326,37 @@ describe("Binary tree deletion", () => {
         },
       };
 
-      expect(wood.deleteBinary(tree, nodeToDelete).left).toBe(null);
+      expect(b.deleteBinary(tree, nodeToDelete).left).toBe(null);
     });
 
-    test.skip("Deep deletion stops when its found the node and doesn't traverse the whole tree", () => {
-      
+    test("Deep deletion stops when its found the node and doesn't traverse the whole tree", () => {
+      const nodeToDelete = {
+        val: 1,
+        left: {
+          val: 0.5,
+          left: null,
+          right: null,
+        },
+        right: null,
+      };
+
+      const tree = {
+        val: 2,
+        left: nodeToDelete,
+        right: {
+          val: 3,
+          left: null,
+          right: null,
+        },
+      };
+
+      const lookupTrace = [];
+
+      const updatedTree = b.deleteBinary(tree, nodeToDelete, true, (node) => {
+        lookupTrace.push(node.val);
+      });
+
+      expect(lookupTrace).toEqual([0.5, 1, 2]);
     });
   });
 });

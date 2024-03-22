@@ -1,3 +1,8 @@
+const NodeColor = {
+  BLACK: 0,
+  RED: 1,
+};
+
 // NB! Conceptual Thought
 // With this interface, whenever you pass something
 // abysmal as left and right, this function would
@@ -43,7 +48,7 @@ const insertBinary = (node, val) => {
   return createBinaryTree(node.val, left, right);
 };
 
-const deleteBinary = (node, nodeToDelete, deep) => {
+const deleteBinary = (node, nodeToDelete, deep, lookupFn) => {
   if (deep === undefined) {
     deep = true;
   }
@@ -54,6 +59,10 @@ const deleteBinary = (node, nodeToDelete, deep) => {
 
   // TODO: Should there really be an in-order traversal?
   inorder(node, (soughtForNode) => {
+    if (lookupFn !== undefined && typeof lookupFn === "function") {
+      lookupFn(soughtForNode);
+    }
+
     if (soughtForNode.left === nodeToDelete) {
       soughtForNode.left = null;
       return true;
@@ -114,4 +123,5 @@ module.exports = {
   insertBinary: insertBinary,
   isABinaryTreeLike: isABinaryTreeLike,
   lookup: lookup,
+  NodeColor: NodeColor,
 };
