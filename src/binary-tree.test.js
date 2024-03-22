@@ -564,13 +564,17 @@ describe("Binary tree insertion", () => {
   });
 
   test("Binary insertion with additional properties", () => {
-    const root = b.createBinaryTree(1);
+    const root = b.createBinaryTree(1, null, null, {
+      initialProperty: "Initial property",
+    });
     const insertedNode = b.insertBinary(root, 2, {
       additionalProperty: "Additional value",
     });
 
     expect(insertedNode).toEqual({
       val: 1,
+      initialProperty: "Initial property",
+      foo: "Bar",
       left: null,
       right: {
         val: 2,
