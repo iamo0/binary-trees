@@ -220,6 +220,67 @@ describe("Detection if given tree is really binary", () => {
   });
 });
 
+describe("Tree preorder traversal", () => {
+  test("Uninterrupted preorder traversal (lookup function returns nothing)", () => {
+    const tree = {
+      val: 3,
+      left: {
+        val: 2,
+        left: null,
+        right: null,
+      },
+      right: {
+        val: 4,
+        left: null,
+        right: null,
+      },
+    };
+
+    const lookupTrace = [];
+    b.preorder(tree, (node) => {
+      lookupTrace.push(node.val);
+    });
+
+    expect(lookupTrace).toEqual([3, 2, 4]);
+  });
+
+  test("Preorder traversal interruption", () => {
+    const traversedNodes = [];
+    let counter = 0;
+
+    const tree = {
+      val: 2,
+      left: {
+        val: 1,
+        left: null,
+        right: null,
+      },
+      right: {
+        val: 4,
+        left: {
+          val: 3,
+          left: null,
+          right: null,
+        },
+        right: {
+          val: 5,
+          left: null,
+          right: null,
+        },
+      },
+    };
+
+    b.preorder(tree, (node) => {
+      counter++;
+      traversedNodes.push(node.val);
+      return node.val === 4;
+    });
+
+    expect(counter).toBe(3);
+    expect(traversedNodes).toEqual([2, 1, 4]);
+  });
+});
+
 describe("Tree in-order traversal", () => {
   test("Uninterrupted in-order traversal (lookup function returns nothing)", () => {
     const tree = {

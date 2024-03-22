@@ -85,6 +85,21 @@ const deleteBinary = (node, nodeToDelete, deep, lookupFn) => {
   return node;
 };
 
+const preorder = (node, fn) => {
+  if (!node) {
+    return;
+  }
+
+  const shouldInterrupt = fn(node);
+
+  if (shouldInterrupt) {
+    return;
+  }
+
+  preorder(node.left, fn);
+  preorder(node.right, fn);
+};
+
 const inorder = (node, fn) => {
   if (!node) {
     return;
@@ -158,4 +173,5 @@ module.exports = {
   isBinaryTreeLike,
   isCorrectBinary,
   lookup,
+  preorder,
 };
