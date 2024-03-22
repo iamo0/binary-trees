@@ -21,10 +21,6 @@ const isABinaryTreeLike = (node) =>
   node.hasOwnProperty("right") &&
   (node.right === null || isABinaryTreeLike(node.right));
 
-const isBalanced = (node) => {
-  return false;
-};
-
 const insertBinary = (node, val) => {
   let left = node.left;
   let right = node.right;
