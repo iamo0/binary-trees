@@ -88,9 +88,34 @@ const inorder = (node, fn) => {
   inorder(node.right, fn);
 };
 
+const bfs = (node, fn, queue) => {
+  if (!node) {
+    return;
+  }
+
+  if (queue === undefined) {
+    queue = [];
+  }
+
+  const shouldInterrupt = fn(node);
+
+  if (shouldInterrupt) {
+    return;
+  }
+
+  if (node.left) {
+    queue.push(node.left);
+  }
+
+  if (node.right) {
+    queue.push(node.right);
+  }
+
+  bfs(queue.shift(), fn, queue);
+};
+
 // TODO: const preorder = (node, fn) => {}
 // TODO: const postorder = (node, fn) => {}
-// TODO: const bfs = (node, fn) => {}
 // TODO: const dfs = (node, fn) => {}
 
 const lookup = (node, lookupFn, orderFn) => {
@@ -112,11 +137,11 @@ const lookup = (node, lookupFn, orderFn) => {
 };
 
 module.exports = {
+  bfs: bfs,
   createBinaryTree: createBinaryTree,
   deleteBinary: deleteBinary,
   inorder: inorder,
   insertBinary: insertBinary,
   isABinaryTreeLike: isABinaryTreeLike,
   lookup: lookup,
-  NodeColor: NodeColor,
 };

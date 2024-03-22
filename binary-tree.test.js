@@ -143,12 +143,12 @@ describe("Tree in-order traversal", () => {
       },
     };
 
-    const list = [];
+    const lookupTrace = [];
     b.inorder(tree, (node) => {
-      list.push(node.val);
+      lookupTrace.push(node.val);
     });
 
-    expect(list).toEqual([2, 3, 4]);
+    expect(lookupTrace).toEqual([2, 3, 4]);
   });
 
   test("In-order traversal interruption", () => {
@@ -188,6 +188,76 @@ describe("Tree in-order traversal", () => {
   });
 });
 
+describe("BFS traversal", () => {
+  test("Uninterrupted BFS traversal (lookup function returns nothing)", () => {
+    const tree = {
+      val: 2,
+      left: {
+        val: 1,
+        left: null,
+        right: null,
+      },
+      right: {
+        val: 4,
+        left: {
+          val: 3,
+          left: null,
+          right: null,
+        },
+        right: {
+          val: 5,
+          left: null,
+          right: null,
+        },
+      },
+    };
+
+    const lookupTrace = [];
+
+    b.bfs(tree, (node) => {
+      lookupTrace.push(node.val);
+    });
+
+    expect(lookupTrace).toEqual([2, 1, 4, 3, 5]);
+  });
+
+  test("BFS traversal interruption", () => {
+    const traversedNodes = [];
+    let counter = 0;
+
+    const tree = {
+      val: 2,
+      left: {
+        val: 1,
+        left: null,
+        right: null,
+      },
+      right: {
+        val: 4,
+        left: {
+          val: 3,
+          left: null,
+          right: null,
+        },
+        right: {
+          val: 5,
+          left: null,
+          right: null,
+        },
+      },
+    };
+
+    b.bfs(tree, (node) => {
+      counter++;
+      traversedNodes.push(node.val);
+      return node.val === 4;
+    });
+
+    expect(counter).toBe(3);
+    expect(traversedNodes).toEqual([2, 1, 4]);
+  });
+});
+
 describe("Node lookup", () => {
   test("In-order lookup", () => {
     const needle = {
@@ -209,6 +279,37 @@ describe("Node lookup", () => {
     expect(
       b.lookup(haystack, (needleLike) => needleLike.val === 3, b.inorder),
     ).toBe(needle);
+  });
+
+  test("BFS lookup", () => {
+    const needle = {
+      val: 3,
+      left: null,
+      right: null,
+    };
+
+    const haystack = {
+      val: 2,
+      left: {
+        val: 1,
+        left: null,
+        right: null,
+      },
+      right: needle,
+    };
+
+    const lookupTrace = [];
+    const foundNode = b.lookup(
+      haystack,
+      (needleLike) => {
+        lookupTrace.push(needleLike.val);
+        return needleLike.val === 3;
+      },
+      b.bfs,
+    );
+
+    expect(foundNode).toBe(needle);
+    expect(lookupTrace).toEqual([2, 1, 3]);
   });
 
   test("Default lookup traversal mode is in-order", () => {
