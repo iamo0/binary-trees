@@ -1,10 +1,60 @@
 const b = require("./binary-tree.js");
 
-test("Tree creation", () => {
-  expect(b.createBinaryTree(1)).toEqual({
-    val: 1,
-    left: null,
-    right: null,
+describe("Tree creation", () => {
+  test("Simple one-node tree", () => {
+    expect(b.createBinaryTree(1)).toEqual({
+      val: 1,
+      left: null,
+      right: null,
+    });
+  });
+
+  test.only("Deep tree creation", () => {
+    const tree = b.createBinaryTree(
+      1,
+      b.createBinaryTree(
+        2, 
+        b.createBinaryTree(3), 
+        b.createBinaryTree(4)
+      ),
+      b.createBinaryTree(
+        5, 
+        b.createBinaryTree(6), 
+        b.createBinaryTree(7)
+      ),
+    );
+
+    const expectedTree = {
+      val: 1,
+      left: {
+        val: 2,
+        left: {
+          val: 3,
+          left: null,
+          right: null,
+        },
+        right: {
+          val: 4,
+          left: null,
+          right: null,
+        },
+      },
+      right: {
+        val: 5,
+        left: {
+          val: 6,
+          left: null,
+          right: null,
+        },
+        right: {
+          val: 7,
+          left: null,
+          right: null,
+        },
+      },
+    };
+
+    expect(tree).toEqual(expectedTree);
   });
 });
 
